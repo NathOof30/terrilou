@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrilou</title>
+    <style>
+        /* Reset and Basic Styles */
+        :root {
+            --primary-color: #4A3F37;
+            /* Dark Blue/Grey */
+            --secondary-color: #F39C12;
+            /* Bright Blue */
+            --accent-color: #F39C12;
+            /* Red/Orange Accent */
+            --light-bg: #ecf0f1;
+            /* Light Grey BG */
+            --text-color: #333;
+            --light-text-color: #fdfdfd;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Arial', 'Helvetica Neue', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-serif);
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--light-text-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-color);
+            color: var(--light-text-color);
+        }
+
+        /* Header & Navigation */
+        .main-header {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .logo a {
+            color: var(--light-text-color);
+        }
+
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .main-nav ul li {
+            margin-left: 20px;
+        }
+
+        .main-nav ul li a {
+            color: var(--light-text-color);
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav ul li a:hover,
+        .main-nav ul li a.active {
+            color: var(--accent-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            /* Hidden by default, shown on mobile */
+            font-size: 1.5rem;
+            color: var(--light-text-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+            /* Adjusted for fixed header */
+        }
+
+        section:nth-child(even) {
+            background-color: var(--light-bg);
+        }
+
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('img/bully-les-mines-oiseaux-et-terri.png') center center/cover no-repeat;
+            color: var(--light-text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 60px;
+            /* Account for fixed header */
+        }
+
+        #hero h1 {
+            color: var(--light-text-color);
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        /* About Us Section */
+        #about .about-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        #about .about-text {
+            flex: 1;
+        }
+
+        #about .about-image {
+            flex: 1;
+            max-width: 400px;
+            /* Limit image size */
+        }
+
+        #about .about-image img {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Catalogue Section */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .book-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-item img.book-cover {
+            width: 100%;
+            height: 300px;
+            /* Adjust as needed */
+            object-fit: cover;
+            /* Or 'contain' if you prefer */
+        }
+
+        .book-info {
+            padding: 1rem;
+            flex-grow: 1;
+            /* Allows info to take remaining space */
+        }
+
+        .book-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-info p {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-info .author {
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Featured Authors Section */
+        .authors-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .author-card {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: calc(33.333% - 2rem);
+            /* Adjust for gaps */
+            min-width: 200px;
+        }
+
+        .author-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+        }
+
+        .author-card h3 {
+            font-size: 1.2rem;
+        }
+
+        /* Submissions Section */
+        #submissions ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+        }
+
+        /* News Section */
+        .news-item {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .news-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .news-item .date {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-group button {
+            width: 100%;
+        }
+
+        /* Footer */
+        .main-footer {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .social-links{
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            color: var(--light-text-color);
+            margin: 0 10px;
+            font-size: 1.5rem;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .main-header .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 15px;
+                right: 20px;
+            }
+
+            .main-nav {
+                width: 100%;
+                display: none;
+                /* Hidden by default, toggled by JS */
+            }
+
+            .main-nav.active {
+                display: block;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .main-nav ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            #hero h1 {
+                font-size: 2.8rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            #about .about-content {
+                flex-direction: column;
+            }
+
+            #about .about-image {
+                margin-top: 1rem;
+                max-width: 100%;
+            }
+
+            .book-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .author-card {
+                width: calc(50% - 1rem);
+                /* 2 per row on smaller tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .author-card {
+                width: 100%;
+                /* 1 per row on mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="main-header">
+        <div class="container">
+            <div class="logo"><a href="#hero">Terrilou</a></div>
+            <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#hero" class="nav-link">Accueil</a></li>
+                    <li><a href="#about" class="nav-link">À Propos</a></li>
+                    <li><a href="#catalogue" class="nav-link">Catalogue</a></li>
+                    <li><a href="#authors" class="nav-link">Auteurs</a></li>
+                    <li><a href="#submissions" class="nav-link">Submissions</a></li>
+                    <li><a href="#news" class="nav-link">Événements</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <h1>Terrilou</h1>
+            <p>Découvrez votre prochaine histoire préférée. Nous donnons vie à des mondes, une page à la fois.</p>
+            <a href="#catalogue" class="btn">Explorer nos livres</a>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2>À Porpos de notre maison</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Née au cœur de Bully-les-Mines, Terrilou puise son inspiration dans
+                            l’histoire et les paysages uniques de notre région. Comme les terrils, symboles de
+                            résilience et de transformation, nous croyons que chaque enfant porte en lui une étincelle
+                            de créativité à cultiver.</p>
+
+                        <p>Notre mission ? Éveiller les esprits par le jeu et l’imaginaire ! À travers des livres
+                            colorés et bienveillants, nous accompagnons les enfants de 3 à 10 ans dans leurs premiers
+                            apprentissages : chiffres, émotions, écologie, ou même métiers farfelus… Parce que grandir
+                            devrait toujours être une aventure joyeuse.</p>
+
+                        <p>Chez Terrilou, la bienveillance est notre phare. Collaborons avec des auteurs et
+                            illustrateurs passionnés pour créer des histoires qui reflètent la diversité du monde, sans
+                            jamais oublier une touche de magie. Notre mascotte, le petit terril malicieux, veille à ce
+                            que chaque page soit une mine de découvertes !</p>
+
+                        <p>Parents, enseignants, petits explorateurs… Bienvenue dans notre univers où les étoiles se
+                            comptent, les robots apprennent les contraires, et où un foulard oublié peut relier les
+                            générations. Ensemble, semons des rêves qui germeront demain.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="img/reading.png"
+                            alt="Person reading a book">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="catalogue">
+            <div class="container">
+                <h2>Notre catalogue</h2>
+                <p>Parcourez nos dernières nouveautés et nos best-sellers les plus appréciés</p>
+                <div class="book-grid">
+                    <!-- Book Item 1 -->
+                    <div class="book-item">
+                        <img src="img/La cuisine magique de Mamie Lulu.png"
+                            alt="Book Cover: The Midnight Library" class="book-cover">
+                        <div class="book-info">
+                            <h3>La cuisine de mots de Mamie Lulu</h3>
+                            <p class="author">Par Mathéo Mollet</p>
+                            <p>Mamie Lulu fait des recettes de grammaire : une pincée de noms, une cuillère de verbes,
+                                et hop, une phrase délicieuse !</p>
+                            <a href="#" class="btn btn-small">En savoir plus</a>
+                        </div>
+                    </div>
+                    <!-- Book Item 2 -->
+                    <div class="book-item">
+                        <img src="img/Lulu compte les étoiles.png"
+                            alt="Book Cover: An Open Book" class="book-cover">
+                        <div class="book-info">
+                            <h3>Lulu compte les étoiles</h3>
+                            <p class="author">Par Mathéo Mollet</p>
+                            <p>Un petit hibou découvre les chiffres en comptant les étoiles dans le ciel. Une douce
+                                initiation aux nombres de 1 à 10.</p>
+                            <a href="#" class="btn btn-small">En savoir plus</a>
+                        </div>
+                    </div>
+                    <!-- Book Item 3 -->
+                    <div class="book-item">
+                        <img src="img/Héros écolo en action.png"
+                            alt="Book Cover: Pile of Books" class="book-cover">
+                        <div class="book-info">
+                            <h3>Écolo, moi ?</h3>
+                            <p class="author">Par Mathéo Mollet</p>
+                            <p>Une aventure autour du recyclage, de l’eau et de la planète, pour devenir un super héros
+                                du quotidien.</p>
+                            <a href="#" class="btn btn-small">En savoir plus</a>
+                        </div>
+                    </div>
+                    <!-- Book Item 4 (Add more as needed) -->
+                    <div class="book-item">
+                        <img src="img/La machine à remonté les mots.png"
+                            alt="Book Cover: Book on a shelf" class="book-cover">
+                        <div class="book-info">
+                            <h3>La machine à remonter les mots</h3>
+                            <p class="author">Par Mathéo Mollet</p>
+                            <p>Tom découvre une machine qui lui montre l’origine des mots. Un voyage étymologique plein
+                                de rebondissements !</p>
+                            <a href="#" class="btn btn-small">En savoir plus</a>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="img/Le livre des rêves créatifs.png"
+                            alt="Book Cover: Book on a shelf" class="book-cover">
+                        <div class="book-info">
+                            <h3>Le grand livre des métiers imaginaires</h3>
+                            <p class="author">Par Mathéo Mollet</p>
+                            <p>Un livre drôle et inventif pour découvrir les métiers réels et farfelus : dresseur d’arc-en-ciel, dompteur de nuages...</p>
+                            <a href="#" class="btn btn-small">En savoir plus</a>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="img/Titouan et ses émotions colorées.png"
+                            alt="Book Cover: Book on a shelf" class="book-cover">
+                        <div class="book-info">
+                            <h3>Titouan et les émotions</h3>
+                            <p class="author">Par Mathéo Mollet</p>
+                            <p>Quand Titouan est triste, en colère ou joyeux, il apprend à comprendre et nommer ses émotions.</p>
+                            <a href="#" class="btn btn-small">En savoir plus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="authors">
+            <div class="container">
+                <h2>Nos chers auteurs</h2>
+                <p>Nous sommes fiers de travailler avec un groupe diversifié d'écrivains talentueux qui apportent à nos
+                    lecteurs des voix uniques et des histoires passionnantes.</p>
+                <div class="authors-grid">
+                    <div class="author-card">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=461&q=80"
+                            alt="Author Jane Evergreen">
+                        <h3>Mathéo Mollet</h3>
+                        <p>Auteur à succès de la série «Les histoire de LULU».</p>
+                    </div>
+                    <div class="author-card">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
+                            alt="Author Alex Ryder">
+                        <h3>Nathanaël Leang</h3>
+                        <p>Auteur reconnu de bandes dessinées pour les tout-petits</p>
+                    </div>
+                    <div class="author-card">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
+                            alt="Author Elara Moon">
+                        <h3>Ilhann Lejeune</h3>
+                        <p>Tisseur de contes enchanteurs pour les jeunes et au-delà.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="soumissions">
+            <div class="container">
+                <h2>Votre histoire a sa place chez Terrilou !</h2>
+                <p>Vous écrivez pour les rêveurs de 3 à 10 ans ? Nous cherchons des <strong>pépites littéraires</strong>
+                    qui allient malice, bienveillance et magie du quotidien. Plongez dans nos valeurs avant de nous
+                    envoyer votre projet.</p>
+
+                <h3>Nous publions :</h3>
+                <ul class="emoji-list">
+                    <li>📚 <strong>Apprentissages ludiques</strong> (chiffres, émotions, écologie...)</li>
+                    <li>🌈 <strong>Récits poétiques</strong> mêlant réel et imaginaire (métiers farfelus, robots
+                        rigolos...)</li>
+                    <li>🌱 <strong>Histoires engagées</strong> (vivre-ensemble, écologie, diversité)</li>
+                    <li>🎨 <strong>Livres interactifs</strong> (cherche-et-trouve, jeux de sons, activités créatives)
+                    </li>
+                    <li>💡 <strong>Projets hybrides</strong> (auteur-illustrateur ou duos créatifs)</li>
+                </ul>
+
+                <h3>Comment proposer votre manuscrit ?</h3>
+                <p>Envoyez-nous à <a href="mailto:graines@terrilou.com" class="cta-email">graines@terrilou.com</a> :
+                <ul>
+                    <li>Un résumé enjoué (1 page max) avec le public visé</li>
+                    <li>3 extraits clés + idées d'illustrations (croquis ou moodboard bienvenus !)</li>
+                    <li>Votre univers en 3 mots : terril, étoile, et... ? 🌟</li>
+                </ul>
+
+                <p><em>Notre petit terril lit chaque projet avec attention. Vous aurez une réponse sous 6 semaines
+                        !</em></p>
+            </div>
+        </section>
+
+        <section id="actualites">
+            <div class="container">
+                <h2>Événements & Pépites</h2>
+
+                <!-- Activité Bibliothèque + Concours -->
+                <div class="news-item">
+                    <h3>🎨 Concours "Dessine ton terril magique !"</h3>
+                    <p class="date">15 novembre 2023 – Bibliothèque de Bully-les-Mines</p>
+                    <p>Pour fêter la sortie de <em>Léa et le mystère des saisons</em>, inventez la fin de l’histoire OU
+                        dessinez le terril habité par des lutins ! Le gagnant remportera <strong>la collection complète
+                            des "Aventures de Terrilou"</strong> 🌟.
+                        <br><a href="#">Règlement et participation ici</a> (jusqu’au 10/11).
+                    </p>
+                </div>
+
+                <!-- Atelier créatif -->
+                <div class="news-item">
+                    <h3>🌱 Atelier "Recyclage rigolo avec Écolo, moi ?"</h3>
+                    <p class="date">30 octobre 2023 – Médiathèque de Bully-les-Mines</p>
+                    <p>Transformez des bouchons en monstres et des boîtes en châteaux forts ! Un atelier gratuit pour
+                        les 5-8 ans, inspiré de notre best-seller <em>Écolo, moi ?</em>.
+                        <br><em>Sur inscription – 10 places seulement !</em> 🐸
+                    </p>
+                </div>
+
+                <!-- Nouveauté éditoriale -->
+                <div class="news-item">
+                    <h3>✨ Nouvelle Collection : "Les Mini-Explorateurs"</h3>
+                    <p class="date">Janvier 2024</p>
+                    <p>Des livres-jeux pour déchiffrer les émotions, les sons et les formes ! Avec des <strong>stickers
+                            à coller</strong> et des <strong>cherche-et-trouve</strong> géants. Découvrez l’extrait de
+                        <em>Où est Terrilou ce matin ?</em> en avant-première à la bibliothèque.
+                    </p>
+                </div>
+
+                <!-- Récompense / Fierté locale -->
+                <div class="news-item">
+                    <h3>🏆 "Titouan et les émotions" primé !</h3>
+                    <p class="date">20 septembre 2023</p>
+                    <p>Notre album a reçu le <strong>Prix de la Pédagogie Joyeuse</strong> décerné par des enseignants !
+                        Un outil précieux pour parler colère, joie et tristesse à l’école ou à la maison.
+                        <br><a href="#">Téléchargez le kit d’activités gratuit</a> 🎭.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Graines de questions ? 🌱</h2>
+                <p>Parents, enseignants, petits rêveurs... Terrilou adore bavarder ! Écrivez-nous pour une idée de
+                    livre, un atelier en classe, ou même une histoire de terril à partager.</p>
+
+                <div class="contact-info" style="text-align: center; margin-bottom: 2rem;">
+                    <p><strong>📬 Courrier des étoiles :</strong> <a
+                            href="mailto:bonjour@terrilou.com">bonjour@terrilou.com</a></p>
+                    <p><strong>📞 Téléphone magique :</strong> 03 21 45 67 89 (du lundi au vendredi, 10h-12h)</p>
+                    <p><strong>🏡 Notre antre :</strong> 12 Rue des Terrils, 62160 Bully-les-Mines<br><em>(On a un
+                            panneau avec notre mascotte, vous ne pouvez pas la rater !)</em></p>
+                </div>
+
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Votre nom (ou surnom de terril) :</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Votre adresse de feuille électronique :</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Sujet de votre message : <small>(ex : "Idée de livre", "Concours de
+                                dessins", "Câlin virtuel")</small></label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Votre message (même les plus fous) : 🎈</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn">Envoyer la bouteille à la mer !</button>
+                    </div>
+                    <p id="form-message" style="text-align:center; margin-top:1rem;"><small>Notre équipe de
+                            lutins-postiers répond sous 3 jours ouvrables. Promis juré ! 🐾</small></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><img src="img/facebook.png" alt=""></a>
+                <a href="#" aria-label="Instagram"><img src="img/instyagram.png" alt=""></a>
+            </div>
+            <p>© <span id="currentYear"></span> Terrilou Presse. Tous droits réservés.</p>
+            <p>Fabriqué avec passion pour les histoires.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Calculate offset for fixed header
+                    const headerOffset = document.querySelector('.main-header').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                    // Close mobile menu if open
+                    if (navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            });
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.main-nav');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const isExpanded = navMenu.classList.contains('active');
+            menuToggle.setAttribute('aria-expanded', isExpanded);
+        });
+
+        // Active link highlighting on scroll (basic)
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.main-nav a');
+        const headerHeight = document.querySelector('.main-header').offsetHeight;
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - headerHeight - 50; // 50px buffer
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+            // Special case for hero: if at top, highlight home
+            if (window.pageYOffset < sections[0].offsetTop - headerHeight - 50) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                document.querySelector('.main-nav a[href="#hero"]').classList.add('active');
+            }
+        });
+
+
+        // Contact Form Submission (Front-end only demonstration)
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('form-message');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault(); // Prevent actual form submission
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+
+                if (name && email && subject && message) {
+                    formMessage.textContent = "Merci pour votre message, " + name + " ! Nous vous recontacterons.";
+                    formMessage.style.color = "green";
+                    contactForm.reset(); // Clear the form
+                } else {
+                    formMessage.textContent = "Please fill out all fields.";
+                    formMessage.style.color = "red";
+                }
+                setTimeout(() => { formMessage.textContent = ''; }, 5000);
+            });
+        }
+
+        // Update current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    </script>
+</body>
+
+</html>
